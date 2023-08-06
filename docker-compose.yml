@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  postgres_app:
+    image: postgres:15.3-alpine3.18
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=test
+    volumes:
+      - /home/rzenteno/bbdd/appdb:/var/lib/postgresql/data:rw
