@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,9 +17,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.PG_USERNAME,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/database/entities/*.entity{.ts,.js}'], // naming convention: {[table]}.entity.ts
+      migrations: [__dirname + '/database/migrations/*.migration{.ts,.js}'], // naming convention: YYYYMMDD-{[action]_[description]}.migration.ts
+      migrationsTableName: "migrations",
       synchronize: true,
-    })
+      logging: true,
+    }),
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
