@@ -1,7 +1,7 @@
 import { Controller, Post, Body, ValidationPipe, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
-import { User } from './user.entity';
+import { User } from '../database/entities/user.entity';
 import { SignInDto } from './dto/signin.dto';
 import { LoginResponse } from '../types/AuthTypes';
 
