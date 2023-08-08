@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { Gender } from '../../types/Gender.enum'
 
 // run the migrations: npx typeorm migration:run
 
@@ -8,7 +9,8 @@ export class Add_Gender_And_Birthdate_To_User implements MigrationInterface {
     await queryRunner.addColumns('user', [
       new TableColumn({
         name: 'gender',
-        type: 'varchar', // Change the data type if needed
+        type: 'enum', // Change the data type if needed
+        enum: Object.values(Gender),
         isNullable: true, // Set to false if gender is mandatory
       }),
       new TableColumn({

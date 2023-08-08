@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, Unique } from 'typeorm';
+import { Gender } from '../../types/Gender.enum'
 
 @Entity()
 @Unique(['email'])
@@ -15,8 +16,12 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true }) // Add the "nullable" option to the gender column
-  gender: string;
+  @Column({
+    type: 'enum',
+    enum: Gender,
+    nullable: true
+  })
+  gender: Gender;
 
   @Column({ type: 'date', nullable: true }) // Specify the type and nullable option for birthdate column
   birthdate: Date;
