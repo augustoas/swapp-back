@@ -8,7 +8,6 @@ export class SignUpDto {
 
   @IsNotEmpty()
   @IsEmail()
-  @Matches(/^.+@lovalledor.cl$/, {message: 'email must end in @lovalledor.cl.'})
   readonly email: string;
 
   @IsNotEmpty()
