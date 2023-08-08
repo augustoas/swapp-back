@@ -1,4 +1,5 @@
-import { Controller, Post, Body, ValidationPipe, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, HttpCode, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { User } from '../database/entities/user.entity';
@@ -18,6 +19,16 @@ export class AuthController {
   @HttpCode(200)
   signIn(@Body(new ValidationPipe()) signInDto: SignInDto): Promise<LoginResponse> {
     return this.authService.signIn(signInDto);
+  }
+
+  @Get('/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req) {}
+
+  @Get('/google/redirect')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Req() req) {
+    return this.authService.googleLogin(req)
   }
 }
   

@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
+import { GoogleStrategy } from './google.strategy'
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { JwtStrategy } from './jwt.strategy';
     TypeOrmModule.forFeature([User])
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy],
   exports: [JwtStrategy, PassportModule] // exported to protect other resources using the auth module: aka must be signed in or needs token
 })
 export class AuthModule {}
