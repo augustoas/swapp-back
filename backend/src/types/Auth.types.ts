@@ -4,6 +4,6 @@ export interface UserWithoutSensitiveData {
 }
 
 export interface LoginResponse {
-  token: string,
-  user: UserWithoutSensitiveData
+  token: string;
+  user: UserWithoutSensitiveData;
 }

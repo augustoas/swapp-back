@@ -9,8 +9,8 @@ import { User } from '../database/entities/user.entity';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>
-    ) {
+    private userRepository: Repository<User>,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET, // Replace with your own secret key
@@ -21,7 +21,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id } = payload;
     const user = await this.userRepository.findBy(id);
     if (!user) {
-      throw new UnauthorizedException('You can not access this resource at this moment.');
+      throw new UnauthorizedException(
+        'You can not access this resource at this moment.',
+      );
     }
     return user;
   }

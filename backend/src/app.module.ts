@@ -19,11 +19,11 @@ import { UsersModule } from './users/users.module';
       database: process.env.PG_DATABASE,
       entities: [__dirname + '/database/entities/*.entity{.ts,.js}'], // naming convention: {[table]}.entity.ts
       migrations: [__dirname + '/database/migrations/*.migration{.ts,.js}'], // naming convention: YYYYMMDD-{[action]_[description]}.migration.ts
-      migrationsTableName: "migrations",
+      migrationsTableName: 'migrations',
       synchronize: true,
       logging: true,
     }),
-    UsersModule
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

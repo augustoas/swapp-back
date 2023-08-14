@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, MinLength, Matches, IsEmail } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  Matches,
+  IsEmail,
+} from 'class-validator';
 
 // defines the shape of the data required for authentication
 export class SignUpDto {
@@ -13,6 +19,9 @@ export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {message: 'password too weak, it must contain at least 1 lowercase letter, 1 uppercase letter, and 1 digit.',})
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
+    message:
+      'password too weak, it must contain at least 1 lowercase letter, 1 uppercase letter, and 1 digit.',
+  })
   readonly password: string;
 }

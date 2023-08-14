@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, IsOptional, IsDateString, IsEmail, IsEnum } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsDateString,
+  IsEmail,
+  IsEnum,
+} from 'class-validator';
 import { Gender } from '../../types/Gender.enum';
 
 // defines the shape of the data required for authentication

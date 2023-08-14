@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -13,7 +17,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
@@ -22,9 +26,9 @@ export class AuthService {
     // try to save this user
     try {
       const newUser = await this.userRepository.save({
-        username, 
-        email, 
-        password: hashedPassword
+        username,
+        email,
+        password: hashedPassword,
       });
       return newUser;
     } catch (error) {
@@ -35,40 +39,40 @@ export class AuthService {
   // Send token as obj
   async signIn(signInDto: SignInDto): Promise<LoginResponse> {
     const { email, password } = signInDto;
-    const user = await this.userRepository.findOne({ 
+    const user = await this.userRepository.findOne({
       where: {
-        email: email
-      }
-    })
+        email: email,
+      },
+    });
     if (!user) {
-      console.log('Email is not valid')
-      throw new UnauthorizedException('Invalid credentials')
+      console.log('Email is not valid');
+      throw new UnauthorizedException('Invalid credentials');
     }
-    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      console.log('Password is incorrect')
-      throw new UnauthorizedException('Invalid credentials')
+      console.log('Password is incorrect');
+      throw new UnauthorizedException('Invalid credentials');
     }
     const payload = { id: user.id.toString(), username: user.username, email };
     const token = await this.jwtService.sign(payload);
     const safeUser: UserWithoutSensitiveData = {
       username: user.username,
-      email: user.email
-    }
+      email: user.email,
+    };
     const response: LoginResponse = {
       token: token,
-      user: safeUser
-    }
+      user: safeUser,
+    };
     return response;
   }
 
   googleLogin(req: any) {
     if (!req.user) {
-      return 'No user from google'
+      return 'No user from google';
     }
     return {
       message: 'User information from google',
-      user: req.user
-    }
+      user: req.user,
+    };
   }
 }

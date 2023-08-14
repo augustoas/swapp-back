@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
-import { Gender } from '../../types/Gender.enum'
+import { Gender } from '../../types/Gender.enum';
 
 // run the migrations: npx typeorm migration:run
 
