@@ -30,6 +30,12 @@ export class User {
   })
   gender: Gender;
 
+  @Column({ nullable: true }) // Allow the resetToken to be nullable
+  resetToken: string;
+
+  @Column({ nullable: true }) // Allow the resetTokenExpiration to be nullable
+  resetTokenExpiration: Date;
+
   @Column({ type: 'date', nullable: true }) // Specify the type and nullable option for birthdate column
   birthdate: Date;
 
