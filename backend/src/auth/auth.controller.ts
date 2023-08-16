@@ -61,7 +61,9 @@ export class AuthController {
   }
 
   @Post('/resetpassword')
-  async resetPassword(@Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto) {
+  async resetPassword(
+    @Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto,
+  ) {
     const response = await this.authService.resetPassword(resetPasswordDto);
     if (!response.status) {
       throw new HttpException(response.message, HttpStatus.BAD_REQUEST);

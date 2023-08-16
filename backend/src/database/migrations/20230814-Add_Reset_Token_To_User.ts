@@ -21,6 +21,9 @@ export class Add_Reset_Token_To_User implements MigrationInterface {
 
   // revert changes
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumns('user', ['resetToken', 'resetTokenExpiration']);
+    await queryRunner.dropColumns('user', [
+      'resetToken',
+      'resetTokenExpiration',
+    ]);
   }
 }

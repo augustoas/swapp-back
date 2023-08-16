@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  MinLength,
-  Matches
-} from 'class-validator';
+import { IsNotEmpty, IsString, MinLength, Matches } from 'class-validator';
 
 // defines the shape of the data required for authentication
 export class ResetPasswordDto {

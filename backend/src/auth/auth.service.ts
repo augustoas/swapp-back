@@ -78,14 +78,16 @@ export class AuthService {
     };
   }
 
-  async generateResetToken(email: string): Promise<{status: boolean, message: string}> {
+  async generateResetToken(
+    email: string,
+  ): Promise<{ status: boolean; message: string }> {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
       return {
         status: false,
-        message: 'User not found'
-      }
+        message: 'User not found',
+      };
     }
 
     const resetToken = crypto.randomBytes(32).toString('hex');
@@ -95,25 +97,27 @@ export class AuthService {
 
     return {
       status: true,
-      message: 'Reset token sent successfully'
-    }
+      message: 'Reset token sent successfully',
+    };
   }
 
-  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{status: boolean, message: string}> {
+  async resetPassword(
+    resetPasswordDto: ResetPasswordDto,
+  ): Promise<{ status: boolean; message: string }> {
     const { resetToken, newPassword, confirmPassword } = resetPasswordDto;
     const user = await this.userRepository.findOne({ where: { resetToken } });
 
     if (!user || user.resetTokenExpiration <= new Date()) {
       return {
         status: false,
-        message: 'Invalid or expired reset token'
-      }
+        message: 'Invalid or expired reset token',
+      };
     }
     if (newPassword !== confirmPassword) {
       return {
         status: false,
-        message: 'New password and confirmed password must be equal'
-      }
+        message: 'New password and confirmed password must be equal',
+      };
     }
 
     // Update the user's password
@@ -126,7 +130,7 @@ export class AuthService {
     // This depends on your application's requirements
     return {
       status: true,
-      message: 'Password reset successful'
-    }
+      message: 'Password reset successful',
+    };
   }
 }
