@@ -5,8 +5,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { Gender } from '../../types/Gender.enum';
+import { Answer } from './answer.entity';
+import { Inquiry } from './inquiry.entity';
+import { Job } from './job.entity';
 
 @Entity()
 @Unique(['email'])
@@ -44,4 +48,16 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
+
+  @OneToMany(() => Answer, (answers) => answers.user)
+  answers: Answer[];
+
+  @OneToMany(() => Inquiry, (inquiries) => inquiries.user)
+  inquiries: Inquiry[];
+
+  @OneToMany(() => Job, (posts) => posts.poster)
+  posts: Job[];
+
+  @OneToMany(() => Job, (tasks) => tasks.tasker)
+  tasks: Job[];
 }
