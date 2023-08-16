@@ -4,25 +4,21 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  Unique,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Job_Status } from '../../types/Status.enum';
 import { Currency } from '../../types/Currency.enum';
+import { User } from './user.entity';
+import { Communication } from './communication.entity';
 
 @Entity()
-@Unique(['poster_id'])
 export class Job {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  tasker_id: number;
-
-  @Column()
-  poster_id: number;
-
-  @Column()
-  job_budget: number;
+  budget: number;
 
   @Column()
   accepted_budget: number;
@@ -49,4 +45,13 @@ export class Job {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
+
+  @ManyToOne(() => User, (poster) => poster.posts)
+  poster: User;
+
+  @ManyToOne(() => User, (tasker) => tasker.tasks)
+  tasker: User;
+
+  @OneToMany(() => Communication, (communications) => communications.inquiry)
+  communications: Communication[];
 }
