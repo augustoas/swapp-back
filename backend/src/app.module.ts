@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { JobsModule } from './jobs/jobs.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JobsModule } from './jobs/jobs.module';
     }),
     UsersModule,
     JobsModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
