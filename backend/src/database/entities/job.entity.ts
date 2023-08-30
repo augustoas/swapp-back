@@ -10,7 +10,10 @@ import {
 import { Job_Status } from '../../types/Status.enum';
 import { Currency } from '../../types/Currency.enum';
 import { User } from './user.entity';
-import { Communication } from './communication.entity';
+import { Review } from './review.entity';
+import { Offer } from './offer.entity';
+import { Question } from './question.entity';
+import { JobCategory } from './jobCategory.entity';
 
 @Entity()
 export class Job {
@@ -46,12 +49,21 @@ export class Job {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
-  @ManyToOne(() => User, (poster) => poster.posts)
-  poster: User;
+  @ManyToOne(() => User, (jobCreator) => jobCreator.createdJobs)
+  jobCreator: User;
 
-  @ManyToOne(() => User, (tasker) => tasker.tasks)
-  tasker: User;
+  @ManyToOne(() => User, (jobWorker) => jobWorker.acceptedJobs, {nullable: true})
+  jobWorker: User;
 
-  @OneToMany(() => Communication, (communications) => communications.inquiry)
-  communications: Communication[];
+  @OneToMany(() => Offer, (offers) => offers.job)
+  offers: Offer[];
+
+  @OneToMany(() => Question, (questions) => questions.job)
+  questions: Question[];
+
+  @OneToMany(() => Review, (reviews) => reviews.job)
+  reviews: Review[];
+
+  @OneToMany(() => JobCategory, (jobCategories) => jobCategories.job)
+  jobCategories: JobCategory[];
 }

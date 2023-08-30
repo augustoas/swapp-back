@@ -8,9 +8,10 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Gender } from '../../types/Gender.enum';
-import { Answer } from './answer.entity';
-import { Inquiry } from './inquiry.entity';
 import { Job } from './job.entity';
+import { Review } from './review.entity';
+import { Offer } from './offer.entity';
+import { Question } from './question.entity';
 
 @Entity()
 @Unique(['email'])
@@ -49,15 +50,21 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
-  @OneToMany(() => Answer, (answers) => answers.user)
-  answers: Answer[];
+  @OneToMany(() => Offer, (offers) => offers.user, {nullable: true})
+  offers: Offer[];
 
-  @OneToMany(() => Inquiry, (inquiries) => inquiries.user)
-  inquiries: Inquiry[];
+  @OneToMany(() => Question, (questions) => questions.user, {nullable: true})
+  questions: Question[];
 
-  @OneToMany(() => Job, (posts) => posts.poster)
-  posts: Job[];
+  @OneToMany(() => Job, (createdJobs) => createdJobs.jobCreator, {nullable: true})
+  createdJobs: Job[];
 
-  @OneToMany(() => Job, (tasks) => tasks.tasker)
-  tasks: Job[];
+  @OneToMany(() => Job, (acceptedJobs) => acceptedJobs.jobWorker, {nullable: true})
+  acceptedJobs: Job[];
+
+  @OneToMany(() => Review, (createdReviews) => createdReviews.reviewCreator, {nullable: true})
+  createdReviews: Review[];
+
+  @OneToMany(() => Review, (receivedReviews) => receivedReviews.reviewReceiver, {nullable: true})
+  receivedReviews: Review[];
 }
