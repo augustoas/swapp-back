@@ -11,12 +11,12 @@ import { Job } from 'src/database/entities/job.entity';
 export class OffersService {
   constructor(
     @InjectRepository(Offer)
-    private readonly offerRepository: Repository<Offer>
+    private readonly offerRepository: Repository<Offer>,
   ) {}
-  
+
   async create(createOfferDto: CreateOfferDto, user: User): Promise<Offer> {
-    const { jobId, ...offerDto } = createOfferDto
-    const newOffer = this.offerRepository.create(offerDto)
+    const { jobId, ...offerDto } = createOfferDto;
+    const newOffer = this.offerRepository.create(offerDto);
     newOffer.user = { id: +user.id } as User;
     newOffer.job = { id: +jobId } as Job;
     return this.offerRepository.save(newOffer);
@@ -27,14 +27,15 @@ export class OffersService {
   }
 
   async findOne(id: number): Promise<Offer> {
-    return this.offerRepository.findOne({where: {id: id}});
+    return this.offerRepository.findOne({ where: { id: id } });
   }
 
   async update(id: number, updateOfferDto: UpdateOfferDto): Promise<Offer> {
-    const thisOffer = await this.offerRepository.findOne({where: {id: id}});
-    if (updateOfferDto.jobId) thisOffer.job = { id: +updateOfferDto.jobId } as Job;
+    const thisOffer = await this.offerRepository.findOne({ where: { id: id } });
+    if (updateOfferDto.jobId)
+      thisOffer.job = { id: +updateOfferDto.jobId } as Job;
     await this.offerRepository.update(id, thisOffer);
-    return this.offerRepository.findOne({where: {id: id}});
+    return this.offerRepository.findOne({ where: { id: id } });
   }
 
   async remove(id: number): Promise<void> {

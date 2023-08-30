@@ -7,8 +7,6 @@ import { Question } from 'src/database/entities/question.entity';
 @Module({
   controllers: [QuestionsController],
   providers: [QuestionsService],
-  imports: [
-    TypeOrmModule.forFeature([Question])
-  ]
+  imports: [TypeOrmModule.forFeature([Question])],
 })
 export class QuestionsModule {}

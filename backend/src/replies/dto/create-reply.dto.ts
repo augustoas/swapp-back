@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsString, IsOptional, IsNumberString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsNumberString,
+} from 'class-validator';
 
 // defines the shape of the data required
 export class CreateReplyDto {
