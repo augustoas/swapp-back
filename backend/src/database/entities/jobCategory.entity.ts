@@ -1,12 +1,10 @@
 import {
-  Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   ManyToOne,
-  OneToMany,
-Unique,
+  Unique,
 } from 'typeorm';
 import { Category } from './category.entity';
 import { Job } from './job.entity';

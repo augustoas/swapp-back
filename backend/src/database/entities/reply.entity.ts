@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Offer } from './offer.entity';
 import { Question } from './question.entity';
@@ -13,14 +13,14 @@ import { Question } from './question.entity';
 export class Reply {
   @PrimaryGeneratedColumn()
   id: number;
-  
+
   @Column({ type: 'text' })
   text: string;
 
-  @ManyToOne(() => Offer, (offer) => offer.replies, {nullable: true})
+  @ManyToOne(() => Offer, (offer) => offer.replies, { nullable: true })
   offer: Offer;
 
-  @ManyToOne(() => Question, (question) => question.replies, {nullable: true})
+  @ManyToOne(() => Question, (question) => question.replies, { nullable: true })
   question: Question;
 
   @CreateDateColumn({ type: 'timestamp' })

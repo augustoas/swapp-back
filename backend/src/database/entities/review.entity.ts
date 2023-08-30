@@ -5,8 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   Unique,
-  OneToMany,
-ManyToOne,
+  ManyToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
 import { User } from './user.entity';

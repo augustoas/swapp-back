@@ -34,6 +34,6 @@ export class Offer {
   @ManyToOne(() => Job, (job) => job.offers)
   job: Job;
 
-  @OneToMany(() => Reply, (replies) => replies.offer, {nullable: true})
+  @OneToMany(() => Reply, (replies) => replies.offer, { nullable: true })
   replies: Reply[];
 }

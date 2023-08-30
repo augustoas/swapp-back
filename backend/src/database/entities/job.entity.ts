@@ -52,7 +52,9 @@ export class Job {
   @ManyToOne(() => User, (jobCreator) => jobCreator.createdJobs)
   jobCreator: User;
 
-  @ManyToOne(() => User, (jobWorker) => jobWorker.acceptedJobs, {nullable: true})
+  @ManyToOne(() => User, (jobWorker) => jobWorker.acceptedJobs, {
+    nullable: true,
+  })
   jobWorker: User;
 
   @OneToMany(() => Offer, (offers) => offers.job)

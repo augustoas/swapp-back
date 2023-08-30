@@ -50,21 +50,31 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
-  @OneToMany(() => Offer, (offers) => offers.user, {nullable: true})
+  @OneToMany(() => Offer, (offers) => offers.user, { nullable: true })
   offers: Offer[];
 
-  @OneToMany(() => Question, (questions) => questions.user, {nullable: true})
+  @OneToMany(() => Question, (questions) => questions.user, { nullable: true })
   questions: Question[];
 
-  @OneToMany(() => Job, (createdJobs) => createdJobs.jobCreator, {nullable: true})
+  @OneToMany(() => Job, (createdJobs) => createdJobs.jobCreator, {
+    nullable: true,
+  })
   createdJobs: Job[];
 
-  @OneToMany(() => Job, (acceptedJobs) => acceptedJobs.jobWorker, {nullable: true})
+  @OneToMany(() => Job, (acceptedJobs) => acceptedJobs.jobWorker, {
+    nullable: true,
+  })
   acceptedJobs: Job[];
 
-  @OneToMany(() => Review, (createdReviews) => createdReviews.reviewCreator, {nullable: true})
+  @OneToMany(() => Review, (createdReviews) => createdReviews.reviewCreator, {
+    nullable: true,
+  })
   createdReviews: Review[];
 
-  @OneToMany(() => Review, (receivedReviews) => receivedReviews.reviewReceiver, {nullable: true})
+  @OneToMany(
+    () => Review,
+    (receivedReviews) => receivedReviews.reviewReceiver,
+    { nullable: true },
+  )
   receivedReviews: Review[];
 }
