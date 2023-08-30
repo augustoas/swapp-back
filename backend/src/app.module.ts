@@ -12,6 +12,7 @@ import { JobCategoriesModule } from './job-categories/job-categories.module';
 import { OffersModule } from './offers/offers.module';
 import { QuestionsModule } from './questions/questions.module';
 import { RepliesModule } from './replies/replies.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { RepliesModule } from './replies/replies.module';
     OffersModule,
     QuestionsModule,
     RepliesModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
