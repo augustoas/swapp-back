@@ -2,14 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RepliesService } from './replies.service';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
+import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
+import { User } from 'src/database/entities/user.entity';
 
 @Controller('replies')
 export class RepliesController {
   constructor(private readonly repliesService: RepliesService) {}
 
   @Post()
-  create(@Body() createReplyDto: CreateReplyDto) {
-    return this.repliesService.create(createReplyDto);
+  create(@Body() createReplyDto: CreateReplyDto, @CurrentUser() user: User) {
+    return this.repliesService.create(createReplyDto, user);
   }
 
   @Get()
