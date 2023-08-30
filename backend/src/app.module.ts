@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { JobsModule } from './jobs/jobs.module';
 import { CategoryModule } from './category/category.module';
 import { CategoriesModule } from './categories/categories.module';
+import { JobCategoriesModule } from './job-categories/job-categories.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CategoriesModule } from './categories/categories.module';
     JobsModule,
     CategoryModule,
     CategoriesModule,
+    JobCategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
