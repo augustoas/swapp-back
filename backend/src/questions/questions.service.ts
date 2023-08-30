@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from 'src/database/entities/user.entity';
+import { Job } from 'src/database/entities/job.entity';
+import { Question } from 'src/database/entities/question.entity';
+
 
 @Injectable()
 export class QuestionsService {
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
+  constructor(
+    @InjectRepository(Question)
+    private readonly questionRepository: Repository<Question>
+  ) {}
+  
+  async create(createQuestionDto: CreateQuestionDto, user: User): Promise<Question> {
+    const { jobId, ...questionDto } = createQuestionDto
+    const newQuestion = this.questionRepository.create(questionDto)
+    newQuestion.user = { id: +user.id } as User;
+    newQuestion.job = { id: +jobId } as Job;
+    return this.questionRepository.save(newQuestion);
   }
 
-  findAll() {
-    return `This action returns all questions`;
+  async findAll(): Promise<Array<Question>> {
+    return this.questionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  async findOne(id: number): Promise<Question> {
+    return this.questionRepository.findOne({where: {id: id}});
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
+  async update(id: number, updateQuestionDto: UpdateQuestionDto): Promise<Question> {
+    const thisQuestion = await this.questionRepository.findOne({where: {id: id}});
+    if (updateQuestionDto.jobId) thisQuestion.job = { id: +updateQuestionDto.jobId } as Job;
+    await this.questionRepository.update(id, thisQuestion);
+    return this.questionRepository.findOne({where: {id: id}});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  async remove(id: number): Promise<void> {
+    await this.questionRepository.delete(id);
   }
 }
