@@ -11,6 +11,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { JobCategoriesModule } from './job-categories/job-categories.module';
 import { OffersModule } from './offers/offers.module';
 import { QuestionsModule } from './questions/questions.module';
+import { RepliesModule } from './replies/replies.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { QuestionsModule } from './questions/questions.module';
     JobCategoriesModule,
     OffersModule,
     QuestionsModule,
+    RepliesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
