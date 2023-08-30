@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Offer } from './offer.entity';
 import { Question } from './question.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Reply {
@@ -22,6 +23,9 @@ export class Reply {
 
   @ManyToOne(() => Question, (question) => question.replies, { nullable: true })
   question: Question;
+
+  @ManyToOne(() => User, (user) => user.replies, { nullable: true })
+  user: User;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdDate: Date;

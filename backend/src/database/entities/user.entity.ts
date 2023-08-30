@@ -12,6 +12,7 @@ import { Job } from './job.entity';
 import { Review } from './review.entity';
 import { Offer } from './offer.entity';
 import { Question } from './question.entity';
+import { Reply } from './reply.entity';
 
 @Entity()
 @Unique(['email'])
@@ -77,4 +78,7 @@ export class User {
     { nullable: true },
   )
   receivedReviews: Review[];
+
+  @OneToMany(() => Reply, (replies) => replies.user, { nullable: true })
+  replies: Reply[];
 }
