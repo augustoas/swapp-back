@@ -11,7 +11,6 @@ import { SignInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { LoginResponse, UserWithoutSensitiveData } from '../types/Auth.types';
 import * as crypto from 'crypto';
 
 @Injectable()
@@ -39,7 +38,7 @@ export class AuthService {
   }
 
   // Send token as obj
-  async signIn(signInDto: SignInDto): Promise<LoginResponse> {
+  async signIn(signInDto: SignInDto): Promise<any> {
     const { email, password } = signInDto;
     const user = await this.userRepository.findOne({
       where: {
@@ -55,16 +54,10 @@ export class AuthService {
       console.log('Password is incorrect');
       throw new UnauthorizedException('Invalid credentials');
     }
+    delete user.password;
     const payload = { id: user.id.toString(), username: user.username, email };
     const token = await this.jwtService.sign(payload);
-    const safeUser: UserWithoutSensitiveData = {
-      username: user.username,
-      email: user.email,
-    };
-    const response: LoginResponse = {
-      token: token,
-      user: safeUser,
-    };
+    const response = { token, user }
     return response;
   }
 

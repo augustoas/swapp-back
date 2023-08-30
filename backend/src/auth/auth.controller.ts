@@ -15,7 +15,6 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { User } from '../database/entities/user.entity';
 import { SignInDto } from './dto/sign-in.dto';
-import { LoginResponse } from '../types/Auth.types';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
@@ -31,7 +30,7 @@ export class AuthController {
   @HttpCode(200)
   signIn(
     @Body(new ValidationPipe()) signInDto: SignInDto,
-  ): Promise<LoginResponse> {
+  ): Promise<any> {
     return this.authService.signIn(signInDto);
   }
 
