@@ -11,4 +11,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=test
     volumes:
-      - /home/rzenteno/bbdd/appdb:/var/lib/postgresql/data:rw
+      - swappdb:/var/lib/postgresql/data:rw
+
+volumes:
+  swappdb:
