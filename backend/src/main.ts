@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ResponseInterceptor } from './helpers/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,8 @@ async function bootstrap() {
   //   allowedHeaders: 'Content-Type,Authorization',
   //   credentials: true, // Enable sending cookies
   // });
+  // Register the interceptor globally
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   await app.listen(4000);
 }
