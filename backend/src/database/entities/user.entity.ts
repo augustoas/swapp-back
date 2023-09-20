@@ -21,7 +21,10 @@ export class User {
   id: number;
 
   @Column()
-  username: string;
+  firstname: string;
+
+  @Column()
+  lastname: string;
 
   @Column()
   email: string;

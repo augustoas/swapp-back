@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   ValidationPipe,
-  HttpCode,
   HttpException,
   HttpStatus,
   UseGuards,
@@ -16,27 +15,27 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { User } from '../database/entities/user.entity';
 import { SignInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('/signup')
-  signUp(@Body(new ValidationPipe()) signUpDto: SignUpDto): Promise<User> {
-    return this.authService.signUp(signUpDto);
+  async signUp(@Body(new ValidationPipe()) signUpDto: SignUpDto): Promise<IDataPayload<User>> {
+    const data = await this.authService.signUp(signUpDto);
+    return { message: 'Usuario creado exitosamente', payload: data };
   }
 
   @Post('/signin')
-  @HttpCode(200)
-  signIn(
-    @Body(new ValidationPipe()) signInDto: SignInDto,
-  ): Promise<any> {
-    return this.authService.signIn(signInDto);
+  async signIn(@Body(new ValidationPipe()) signInDto: SignInDto): Promise<IDataPayload<{ token: string, user: User }>> {
+    const data = await this.authService.signIn(signInDto);
+    return { message: 'Inicio de sesión exitoso', payload: data };
   }
 
   @Get('/google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
+  async googleAuth() { }
 
   @Get('/google/redirect')
   @UseGuards(AuthGuard('google'))

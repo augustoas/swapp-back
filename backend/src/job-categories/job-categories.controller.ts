@@ -13,7 +13,7 @@ import { UpdateJobCategoryDto } from './dto/update-job-category.dto';
 
 @Controller('job-categories')
 export class JobCategoriesController {
-  constructor(private readonly jobCategoriesService: JobCategoriesService) {}
+  constructor(private readonly jobCategoriesService: JobCategoriesService) { }
 
   @Post()
   create(@Body() createJobCategoryDto: CreateJobCategoryDto) {
