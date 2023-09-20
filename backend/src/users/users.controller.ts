@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,7 +18,7 @@ import { IDataPayload } from 'src/types/Api.interface';
 @Controller('users')
 @UseGuards(AuthGuard())
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
   /*
   @Post() --> SIGN UP - AUTH
   create(@Body() createUserDto: CreateUserDto): Promise<User> {

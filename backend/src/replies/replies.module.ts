@@ -8,9 +8,6 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   controllers: [RepliesController],
   providers: [RepliesService],
-  imports: [
-    AuthModule,
-    TypeOrmModule.forFeature([Reply])
-  ],
+  imports: [AuthModule, TypeOrmModule.forFeature([Reply])],
 })
-export class RepliesModule { }
+export class RepliesModule {}

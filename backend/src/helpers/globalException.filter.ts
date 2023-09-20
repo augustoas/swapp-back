@@ -1,4 +1,9 @@
-import { Catch, ExceptionFilter, ArgumentsHost, HttpException } from '@nestjs/common';
+import {
+  Catch,
+  ExceptionFilter,
+  ArgumentsHost,
+  HttpException,
+} from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 import { Request, Response } from 'express';
 import { IApiResponse } from 'src/types/Api.interface';
@@ -23,9 +28,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       this.exceptionResponse.statusCode = exception.getStatus();
       this.exceptionResponse.statusText = exception.message;
-      this.details = exception.getResponse()
+      this.details = exception.getResponse();
     } else if (exception instanceof QueryFailedError) {
-      this.exceptionResponse.statusCode = 409
+      this.exceptionResponse.statusCode = 409;
       this.exceptionResponse.statusText = 'Database Query Failed';
       this.details = exception.driverError.constraint;
     }
@@ -34,9 +39,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       details: this.details,
       timestamp: new Date().toISOString(),
       path: request.url,
-    }
+    };
 
-    console.log(exception)
-    response.status(this.exceptionResponse.statusCode).json(this.exceptionResponse);
+    console.log(exception);
+    response
+      .status(this.exceptionResponse.statusCode)
+      .json(this.exceptionResponse);
   }
 }

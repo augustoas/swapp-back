@@ -8,16 +8,17 @@ import { Category } from 'src/database/entities/category.entity';
 import { Job } from 'src/database/entities/job.entity';
 import { JobCategory } from 'src/database/entities/jobCategory.entity';
 
-
 @Injectable()
 export class JobCategoriesService {
   constructor(
     @InjectRepository(JobCategory)
     private readonly jobCategoryRepository: Repository<JobCategory>,
-  ) { }
+  ) {}
 
-  async create(createJobCategoryDto: CreateJobCategoryDto): Promise<JobCategory> {
-    const { jobId, categoryId } = createJobCategoryDto
+  async create(
+    createJobCategoryDto: CreateJobCategoryDto,
+  ): Promise<JobCategory> {
+    const { jobId, categoryId } = createJobCategoryDto;
     const newJobCategory = this.jobCategoryRepository.create();
     newJobCategory.job = { id: +jobId } as Job;
     newJobCategory.category = { id: +categoryId } as Category;
@@ -33,8 +34,13 @@ export class JobCategoriesService {
     return this.jobCategoryRepository.findOne({ where: { id: id } });
   }
 
-  async update(id: number, updateJobCategoryDto: UpdateJobCategoryDto): Promise<JobCategory> {
-    const thisReply = await this.jobCategoryRepository.findOne({ where: { id: id } });
+  async update(
+    id: number,
+    updateJobCategoryDto: UpdateJobCategoryDto,
+  ): Promise<JobCategory> {
+    const thisReply = await this.jobCategoryRepository.findOne({
+      where: { id: id },
+    });
     if (updateJobCategoryDto.jobId)
       thisReply.job = { id: +updateJobCategoryDto.jobId } as Job;
     if (updateJobCategoryDto.categoryId)

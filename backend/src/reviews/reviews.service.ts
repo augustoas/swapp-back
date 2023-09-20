@@ -12,10 +12,10 @@ export class ReviewsService {
   constructor(
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
-  ) { }
+  ) {}
 
   async create(createReviewDto: CreateReviewDto, user: User): Promise<Review> {
-    const { jobId, reviewReceiverId, ...createReviewData } = createReviewDto
+    const { jobId, reviewReceiverId, ...createReviewData } = createReviewDto;
     const newReview = this.reviewRepository.create(createReviewData);
     newReview.job = { id: +jobId } as Job;
     newReview.reviewCreator = { id: +user.id } as User;
@@ -32,11 +32,15 @@ export class ReviewsService {
   }
 
   async update(id: number, updateReviewDto: UpdateReviewDto): Promise<Review> {
-    const thisReview = await this.reviewRepository.findOne({ where: { id: id } });
+    const thisReview = await this.reviewRepository.findOne({
+      where: { id: id },
+    });
     if (updateReviewDto.jobId)
       thisReview.job = { id: +updateReviewDto.jobId } as Job;
     if (updateReviewDto.reviewReceiverId)
-      thisReview.reviewReceiver = { id: +updateReviewDto.reviewReceiverId } as User;
+      thisReview.reviewReceiver = {
+        id: +updateReviewDto.reviewReceiverId,
+      } as User;
 
     await this.reviewRepository.update(id, thisReview);
     return this.reviewRepository.findOne({ where: { id: id } });

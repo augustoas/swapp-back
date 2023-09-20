@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { JobCategoriesService } from './job-categories.service';
 import { CreateJobCategoryDto } from './dto/create-job-category.dto';
@@ -19,7 +19,7 @@ import { IDataPayload } from 'src/types/Api.interface';
 @Controller('job-categories')
 @UseGuards(AuthGuard())
 export class JobCategoriesController {
-  constructor(private readonly jobCategoriesService: JobCategoriesService) { }
+  constructor(private readonly jobCategoriesService: JobCategoriesService) {}
 
   @Post()
   create(@Body() createJobCategoryDto: CreateJobCategoryDto) {

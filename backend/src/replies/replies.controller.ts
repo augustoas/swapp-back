@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { RepliesService } from './replies.service';
 import { CreateReplyDto } from './dto/create-reply.dto';
@@ -19,7 +19,7 @@ import { IDataPayload } from 'src/types/Api.interface';
 @Controller('replies')
 @UseGuards(AuthGuard())
 export class RepliesController {
-  constructor(private readonly repliesService: RepliesService) { }
+  constructor(private readonly repliesService: RepliesService) {}
 
   @Post()
   create(@Body() createReplyDto: CreateReplyDto, @CurrentUser() user: User) {

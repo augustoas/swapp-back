@@ -19,30 +19,40 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
     const { password, ...signUpData } = signUpDto;
     const hashedPassword = await bcrypt.hash(password, 12);
-    const newUser = await this.userRepository.create(signUpData)
+    const newUser = await this.userRepository.create(signUpData);
     newUser.password = hashedPassword;
     return await this.userRepository.save(newUser);
   }
 
   // Send token as obj
-  async signIn(signInDto: SignInDto): Promise<{ token: string, user: User }> {
-    const user = await this.userRepository.findOne({ where: { email: signInDto.email } });
+  async signIn(signInDto: SignInDto): Promise<{ token: string; user: User }> {
+    const user = await this.userRepository.findOne({
+      where: { email: signInDto.email },
+    });
     if (!user) {
       console.log('Email is not valid');
       throw new UnauthorizedException('Invalid credentials');
     }
-    const isPasswordCorrect = await bcrypt.compare(signInDto.password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      signInDto.password,
+      user.password,
+    );
     if (!isPasswordCorrect) {
       console.log('Password is incorrect');
       throw new UnauthorizedException('Invalid credentials');
     }
     delete user.password;
-    const payload = { id: user.id.toString(), firstname: user.firstname, lastname: user.lastname, email: signInDto.email };
+    const payload = {
+      id: user.id.toString(),
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: signInDto.email,
+    };
     const token = await this.jwtService.sign(payload);
     return { token, user };
   }

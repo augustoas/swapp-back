@@ -6,13 +6,12 @@ import { Repository } from 'typeorm';
 import { Category } from 'src/database/entities/category.entity';
 import { User } from 'src/database/entities/user.entity';
 
-
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-  ) { }
+  ) {}
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const newCategory = this.categoryRepository.create(createCategoryDto);
@@ -27,7 +26,10 @@ export class CategoriesService {
     return this.categoryRepository.findOne({ where: { id: id } });
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
+  async update(
+    id: number,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<Category> {
     await this.categoryRepository.update(id, updateCategoryDto);
     return this.categoryRepository.findOne({ where: { id: id } });
   }

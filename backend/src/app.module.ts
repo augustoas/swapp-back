@@ -47,7 +47,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
-    }
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

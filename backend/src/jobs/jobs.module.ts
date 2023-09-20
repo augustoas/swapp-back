@@ -8,9 +8,6 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   controllers: [JobsController],
   providers: [JobsService],
-  imports: [
-    AuthModule,
-    TypeOrmModule.forFeature([Job])
-  ],
+  imports: [AuthModule, TypeOrmModule.forFeature([Job])],
 })
 export class JobsModule {}
