@@ -6,14 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '../database/entities/user.entity';
+import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/database/entities/user.entity';
+import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('users')
+@UseGuards(AuthGuard())
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
   /*
   @Post() --> SIGN UP - AUTH
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
