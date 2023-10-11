@@ -10,42 +10,43 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity';
-import { IDataPayload } from 'src/types/Api.interface';
+import { IApiResponse } from 'src/types/Api.interface';
 
 @Controller('users')
 @UseGuards(AuthGuard())
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  /*
-  @Post() --> SIGN UP - AUTH
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto): Promise<IApiResponse<User>> {
+    const data = await this.usersService.create(createUserDto);
+    return { message: 'Usuario creado exitosamente', payload: data };
   }
-  */
 
   @Get()
-  findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+  async findAll(): Promise<IApiResponse<User[]>> {
+    const data = await this.usersService.findAll();
+    return { message: '', payload: data };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<IApiResponse<User>> {
+    const data = await this.usersService.findOne(+id);
+    return { message: '', payload: data };
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
-    return this.usersService.update(+id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<IApiResponse<User>> {
+    const data = await this.usersService.update(+id, updateUserDto);
+    return { message: 'Usuario editado exitosamente', payload: data };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.usersService.remove(+id);
+  async remove(@Param('id') id: string): Promise<IApiResponse<any>> {
+    const data = await this.usersService.remove(+id);
+    return { message: 'Usuario eliminado exitosamente', payload: data };
   }
 }

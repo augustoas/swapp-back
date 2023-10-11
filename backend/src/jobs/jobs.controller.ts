@@ -14,7 +14,6 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { User } from 'src/database/entities/user.entity';
-import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('jobs')
 @UseGuards(AuthGuard())
@@ -22,27 +21,32 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Post()
-  create(@Body() createJobDto: CreateJobDto, @CurrentUser() user: User) {
-    return this.jobsService.create(createJobDto, user);
+  async create(@Body() createJobDto: CreateJobDto, @CurrentUser() user: User) {
+    const data = await this.jobsService.create(createJobDto, user);
+    return { message: 'Creado exitosamente', payload: data };
   }
 
   @Get()
-  findAll() {
-    return this.jobsService.findAll();
+  async findAll() {
+    const data = await this.jobsService.findAll();
+    return { message: '', payload: data };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.jobsService.findOne(+id);
+    return { message: '', payload: data };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(+id, updateJobDto);
+  async update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
+    const data = await this.jobsService.update(+id, updateJobDto);
+    return { message: 'Editado exitosamente', payload: data };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.jobsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.jobsService.remove(+id);
+    return { message: 'Eliminado exitosamente', payload: data };
   }
 }

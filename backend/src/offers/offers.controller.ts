@@ -14,7 +14,6 @@ import { UpdateOfferDto } from './dto/update-offer.dto';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity';
-import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('offers')
 @UseGuards(AuthGuard())
@@ -22,27 +21,32 @@ export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
   @Post()
-  create(@Body() createOfferDto: CreateOfferDto, @CurrentUser() user: User) {
-    return this.offersService.create(createOfferDto, user);
+  async create(@Body() createOfferDto: CreateOfferDto, @CurrentUser() user: User) {
+    const data = await this.offersService.create(createOfferDto, user);
+    return { message: 'Creado exitosamente', payload: data };
   }
 
   @Get()
-  findAll() {
-    return this.offersService.findAll();
+  async findAll() {
+    const data = await this.offersService.findAll();
+    return { message: '', payload: data };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.offersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.offersService.findOne(+id);
+    return { message: '', payload: data };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
-    return this.offersService.update(+id, updateOfferDto);
+  async update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
+    const data = await this.offersService.update(+id, updateOfferDto);
+    return { message: 'Editado exitosamente', payload: data };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.offersService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.offersService.remove(+id);
+    return { message: 'Eliminado exitosamente', payload: data };
   }
 }
