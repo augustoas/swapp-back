@@ -6,12 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { JobCategoriesService } from './job-categories.service';
 import { CreateJobCategoryDto } from './dto/create-job-category.dto';
 import { UpdateJobCategoryDto } from './dto/update-job-category.dto';
+import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/database/entities/user.entity';
+import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('job-categories')
+@UseGuards(AuthGuard())
 export class JobCategoriesController {
   constructor(private readonly jobCategoriesService: JobCategoriesService) {}
 

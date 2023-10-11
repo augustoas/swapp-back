@@ -25,5 +25,5 @@ export class JobCategory {
   category: Category;
 
   @ManyToOne(() => Job, (job) => job.jobCategories)
-  job: Job[];
+  job: Job;
 }

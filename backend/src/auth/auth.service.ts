@@ -22,43 +22,39 @@ export class AuthService {
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
-    const { username, email, password } = signUpDto;
+    const { password, ...signUpData } = signUpDto;
     const hashedPassword = await bcrypt.hash(password, 12);
-    // try to save this user
-    try {
-      const newUser = await this.userRepository.save({
-        username,
-        email,
-        password: hashedPassword,
-      });
-      return newUser;
-    } catch (error) {
-      throw new ConflictException('Cannot create a duplicate user');
-    }
+    const newUser = await this.userRepository.create(signUpData);
+    newUser.password = hashedPassword;
+    return await this.userRepository.save(newUser);
   }
 
   // Send token as obj
-  async signIn(signInDto: SignInDto): Promise<any> {
-    const { email, password } = signInDto;
+  async signIn(signInDto: SignInDto): Promise<{ token: string; user: User }> {
     const user = await this.userRepository.findOne({
-      where: {
-        email: email,
-      },
+      where: { email: signInDto.email },
     });
     if (!user) {
       console.log('Email is not valid');
       throw new UnauthorizedException('Invalid credentials');
     }
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      signInDto.password,
+      user.password,
+    );
     if (!isPasswordCorrect) {
       console.log('Password is incorrect');
       throw new UnauthorizedException('Invalid credentials');
     }
     delete user.password;
-    const payload = { id: user.id.toString(), username: user.username, email };
+    const payload = {
+      id: user.id.toString(),
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: signInDto.email,
+    };
     const token = await this.jwtService.sign(payload);
-    const response = { token, user }
-    return response;
+    return { token, user };
   }
 
   googleLogin(req: any) {

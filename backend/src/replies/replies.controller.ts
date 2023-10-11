@@ -6,14 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { RepliesService } from './replies.service';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
+import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity';
+import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('replies')
+@UseGuards(AuthGuard())
 export class RepliesController {
   constructor(private readonly repliesService: RepliesService) {}
 

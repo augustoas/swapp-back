@@ -14,6 +14,7 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { User } from 'src/database/entities/user.entity';
+import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('jobs')
 @UseGuards(AuthGuard())

@@ -6,12 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/database/entities/user.entity';
+import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('categories')
+@UseGuards(AuthGuard())
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
