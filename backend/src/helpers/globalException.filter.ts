@@ -1,9 +1,4 @@
-import {
-  Catch,
-  ExceptionFilter,
-  ArgumentsHost,
-  HttpException,
-} from '@nestjs/common';
+import { Catch, ExceptionFilter, ArgumentsHost, HttpException } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 import { Request, Response } from 'express';
 import { IApiResponse } from 'src/types/Api.interface';
@@ -11,14 +6,11 @@ import { IApiResponse } from 'src/types/Api.interface';
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   private exceptionResponse: IApiResponse<any> = {
-    statusCode: 500,
-    statusText: 'Internal Server Error',
-    data: {
-      message: 'Error',
-      payload: {},
-    },
+    message: 'Error',
+    payload: {},
   };
   private details: any = {};
+  private statusCode = 500;
 
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -26,24 +18,20 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
 
     if (exception instanceof HttpException) {
-      this.exceptionResponse.statusCode = exception.getStatus();
-      this.exceptionResponse.statusText = exception.message;
-      this.details = exception.getResponse();
+      this.statusCode = exception.getStatus();
+      this.details = exception.getResponse()
     } else if (exception instanceof QueryFailedError) {
-      this.exceptionResponse.statusCode = 409;
-      this.exceptionResponse.statusText = 'Database Query Failed';
+      this.statusCode = 409;
       this.details = exception.driverError.constraint;
     }
 
-    this.exceptionResponse.data.payload = {
+    this.exceptionResponse.payload = {
       details: this.details,
       timestamp: new Date().toISOString(),
       path: request.url,
-    };
+    }
 
-    console.log(exception);
-    response
-      .status(this.exceptionResponse.statusCode)
-      .json(this.exceptionResponse);
+    console.log(exception)
+    response.status(this.statusCode).json(this.exceptionResponse);
   }
 }

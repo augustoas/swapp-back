@@ -14,7 +14,6 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity';
-import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('questions')
 @UseGuards(AuthGuard())
@@ -22,33 +21,32 @@ export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
-  create(
-    @Body() createQuestionDto: CreateQuestionDto,
-    @CurrentUser() user: User,
-  ) {
-    return this.questionsService.create(createQuestionDto, user);
+  async create(@Body() createQuestionDto: CreateQuestionDto, @CurrentUser() user: User) {
+    const data = await this.questionsService.create(createQuestionDto, user);
+    return { message: 'Creado exitosamente', payload: data };
   }
 
   @Get()
-  findAll() {
-    return this.questionsService.findAll();
+  async findAll() {
+    const data = await this.questionsService.findAll();
+    return { message: '', payload: data };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.questionsService.findOne(+id);
+    return { message: '', payload: data };
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateQuestionDto: UpdateQuestionDto,
-  ) {
-    return this.questionsService.update(+id, updateQuestionDto);
+  async update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto) {
+    const data = await this.questionsService.update(+id, updateQuestionDto);
+    return { message: 'Editado exitosamente', payload: data };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.questionsService.remove(+id);
+    return { message: 'Eliminado exitosamente', payload: data };
   }
 }

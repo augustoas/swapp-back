@@ -14,7 +14,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { User } from 'src/database/entities/user.entity';
-import { IDataPayload } from 'src/types/Api.interface';
+import { IApiResponse } from 'src/types/Api.interface';
 
 @Controller('reviews')
 @UseGuards(AuthGuard())
@@ -22,27 +22,32 @@ export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto, @CurrentUser() user: User) {
-    return this.reviewsService.create(createReviewDto, user);
+  async create(@Body() createReviewDto: CreateReviewDto, @CurrentUser() user: User) {
+    const data = await this.reviewsService.create(createReviewDto, user);
+    return { message: 'Creado exitosamente', payload: data };
   }
 
   @Get()
-  findAll() {
-    return this.reviewsService.findAll();
+  async findAll() {
+    const data = await this.reviewsService.findAll();
+    return { message: '', payload: data };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.reviewsService.findOne(+id);
+    return { message: '', payload: data };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewsService.update(+id, updateReviewDto);
+  async update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
+    const data = await this.reviewsService.update(+id, updateReviewDto);
+    return { message: 'Editado exitosamente', payload: data };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.reviewsService.remove(+id);
+    return { message: 'Eliminado exitosamente', payload: data };
   }
 }

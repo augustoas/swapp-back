@@ -14,7 +14,6 @@ import { UpdateJobCategoryDto } from './dto/update-job-category.dto';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity';
-import { IDataPayload } from 'src/types/Api.interface';
 
 @Controller('job-categories')
 @UseGuards(AuthGuard())
@@ -22,30 +21,32 @@ export class JobCategoriesController {
   constructor(private readonly jobCategoriesService: JobCategoriesService) {}
 
   @Post()
-  create(@Body() createJobCategoryDto: CreateJobCategoryDto) {
-    return this.jobCategoriesService.create(createJobCategoryDto);
+  async create(@Body() createJobCategoryDto: CreateJobCategoryDto) {
+    const data = await this.jobCategoriesService.create(createJobCategoryDto);
+    return { message: 'Creado exitosamente', payload: data };
   }
 
   @Get()
-  findAll() {
-    return this.jobCategoriesService.findAll();
+  async findAll() {
+    const data = await this.jobCategoriesService.findAll();
+    return { message: '', payload: data };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.jobCategoriesService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.jobCategoriesService.findOne(+id);
+    return { message: '', payload: data };
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateJobCategoryDto: UpdateJobCategoryDto,
-  ) {
-    return this.jobCategoriesService.update(+id, updateJobCategoryDto);
+  async update(@Param('id') id: string, @Body() updateJobCategoryDto: UpdateJobCategoryDto) {
+    const data = await this.jobCategoriesService.update(+id, updateJobCategoryDto);
+    return { message: 'Editado exitosamente', payload: data };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.jobCategoriesService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const data = await this.jobCategoriesService.remove(+id);
+    return { message: 'Eliminado exitosamente', payload: data };
   }
 }

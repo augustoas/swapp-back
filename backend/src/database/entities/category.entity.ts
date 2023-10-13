@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   Unique,
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 import { JobCategory } from './jobCategory.entity';
 
@@ -21,4 +23,10 @@ export class Category {
 
   @OneToMany(() => JobCategory, (jobCategories) => jobCategories.category)
   jobCategories: JobCategory[];
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdDate: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedDate: Date;
 }
