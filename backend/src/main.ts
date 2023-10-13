@@ -4,6 +4,7 @@ import { ResponseInterceptor } from './helpers/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('backend'); // This adds /backend to all routes
   app.enableCors(); // Enable CORS for all routes
   // Alternatively, you can set CORS options explicitly:
   // app.enableCors({
