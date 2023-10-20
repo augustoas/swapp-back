@@ -23,9 +23,5 @@ export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
-  @Matches(/^(?=.*[a-z])(?=.*\d)[a-z\d]{8,}$/, {
-    message:
-      'password too weak, it must contain at least 1 lowercase letter and 1 digit.',
-  })
   readonly password: string;
 }

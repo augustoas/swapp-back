@@ -12,6 +12,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
+import { MailService } from './../mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
@@ -67,59 +69,44 @@ export class AuthService {
     };
   }
 
-  async generateResetToken(
-    email: string,
-  ): Promise<{ status: boolean; message: string }> {
+  // envia token a email
+  async generateResetToken(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
-
-    if (!user) {
-      return {
-        status: false,
-        message: 'User not found',
-      };
-    }
-
+    if (!user) throw new Error("Invalid credentials");
     const resetToken = crypto.randomBytes(32).toString('hex');
     user.resetToken = resetToken;
     user.resetTokenExpiration = new Date(Date.now() + 3600000); // Token expires in 1 hour
+    this.mailService.sendResetPassword(email, resetToken);
     await this.userRepository.save(user);
-
-    return {
-      status: true,
-      message: 'Reset token sent successfully',
-    };
+    
+    return resetToken;
   }
 
-  async resetPassword(
-    resetPasswordDto: ResetPasswordDto,
-  ): Promise<{ status: boolean; message: string }> {
-    const { resetToken, newPassword, confirmPassword } = resetPasswordDto;
-    const user = await this.userRepository.findOne({ where: { resetToken } });
+  // recibe y valida token
+  private async handleResetToken(token: string): Promise<User> {
+    // token valido?
+    const user = await this.userRepository.findOne({ where: { resetToken: token } });
+    if (!user) throw new Error("Invalid token");
+    // ha pasado 1 hr?
+    const oneHourAgo = new Date();
+    oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+    console.log("resetTokenExpiration => ", user.resetTokenExpiration)
+    console.log("oneHourAgo => ", oneHourAgo)
+    if (user.resetTokenExpiration < oneHourAgo) throw new Error("Expired token");
+    return user
+  }
 
-    if (!user || user.resetTokenExpiration <= new Date()) {
-      return {
-        status: false,
-        message: 'Invalid or expired reset token',
-      };
-    }
-    if (newPassword !== confirmPassword) {
-      return {
-        status: false,
-        message: 'New password and confirmed password must be equal',
-      };
-    }
-
+  // cambia contraseña
+  async resetPassword(resetPasswordDto: ResetPasswordDto, user?: User) {
+    // Si viene dentro de la app, user está definido, si viene x token, es undefined
+    let thisUser = user;
+    const { newPassword, confirmPassword, resetToken } = resetPasswordDto;
+    // Si viene el token, viene desde afuera y hay que validar token
+    if (resetToken) thisUser = await this.handleResetToken(resetToken);
+    if (!thisUser) throw new Error("Invalid credentials.");
+    if (newPassword !== confirmPassword) throw new Error("Passwords must match.");
     // Update the user's password
-    user.password = newPassword;
-    user.resetToken = null;
-    user.resetTokenExpiration = null;
-    await this.userRepository.save(user);
-
-    // Optionally, log the user in after resetting the password
-    // This depends on your application's requirements
-    return {
-      status: true,
-      message: 'Password reset successful',
-    };
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    return this.userRepository.update(thisUser.id, {password: hashedPassword});
   }
 }

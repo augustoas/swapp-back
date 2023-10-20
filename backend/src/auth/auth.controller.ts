@@ -8,6 +8,7 @@ import {
   HttpStatus,
   UseGuards,
   Req,
+  Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
@@ -16,6 +17,8 @@ import { User } from '../database/entities/user.entity';
 import { SignInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { IApiResponse } from 'src/types/Api.interface';
+import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
+import { OptionalJwt } from 'src/decorators/OptionalJwt.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -49,27 +52,13 @@ export class AuthController {
 
   @Post('/forgotpassword')
   async forgotPassword(@Body() body: { email: string }) {
-    const { email } = body;
-    const response = await this.authService.generateResetToken(email);
-
-    if (!response.status) {
-      throw new HttpException(response.message, HttpStatus.NOT_FOUND);
-    }
-    // Send reset token to the user's email
-    // Include a link with the token to the frontend
-    // Handle this part in your application (e.g., using a third-party email service)
-    // ...
-    return response;
+    const data = await this.authService.generateResetToken(body.email);
+    return { message: 'Se ha enviado un correo con las indicaciones para recuperar su contraseña.', payload: data };
   }
 
   @Post('/resetpassword')
-  async resetPassword(
-    @Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto,
-  ) {
-    const response = await this.authService.resetPassword(resetPasswordDto);
-    if (!response.status) {
-      throw new HttpException(response.message, HttpStatus.BAD_REQUEST);
-    }
-    return response;
+  async resetPassword(@Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto, @OptionalJwt() user?: User) {
+    const data = await this.authService.resetPassword(resetPasswordDto, user);
+    return { message: 'Cambio de contraseña exitoso.', payload: data };
   }
 }
