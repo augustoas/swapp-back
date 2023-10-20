@@ -39,8 +39,14 @@ export class JobCategoriesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateJobCategoryDto: UpdateJobCategoryDto) {
-    const data = await this.jobCategoriesService.update(+id, updateJobCategoryDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateJobCategoryDto: UpdateJobCategoryDto,
+  ) {
+    const data = await this.jobCategoriesService.update(
+      +id,
+      updateJobCategoryDto,
+    );
     return { message: 'Editado exitosamente', payload: data };
   }
 

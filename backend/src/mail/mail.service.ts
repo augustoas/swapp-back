@@ -4,9 +4,7 @@ import { User } from 'src/database/entities/user.entity';
 
 @Injectable()
 export class MailService {
-  constructor(
-    private mailerService: MailerService,
-    ) { }
+  constructor(private mailerService: MailerService) {}
 
   async sendUserConfirmation(user: User) {
     await this.mailerService.sendMail({
@@ -25,8 +23,9 @@ export class MailService {
       to: email,
       subject: 'Request to reset your password.',
       template: './resetPassword', // `.hbs` extension is appended automatically
-      context: { // ✏️ filling curly brackets with content
-        resetLink: `${process.env.BASE_FRONT_URL}${token}/recoverpassword`
+      context: {
+        // ✏️ filling curly brackets with content
+        resetLink: `${process.env.BASE_FRONT_URL}${token}/recoverpassword`,
       },
     });
   }

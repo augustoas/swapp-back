@@ -20,7 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     const { id } = payload;
     const user = await this.userRepository.findOne({ where: { id: id } });
-    if (!user) throw new UnauthorizedException('You can not access this resource at this moment.');
+    if (!user)
+      throw new UnauthorizedException(
+        'You can not access this resource at this moment.',
+      );
     return user;
   }
 }

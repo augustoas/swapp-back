@@ -22,7 +22,10 @@ export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
-  async create(@Body() createReviewDto: CreateReviewDto, @CurrentUser() user: User) {
+  async create(
+    @Body() createReviewDto: CreateReviewDto,
+    @CurrentUser() user: User,
+  ) {
     const data = await this.reviewsService.create(createReviewDto, user);
     return { message: 'Creado exitosamente', payload: data };
   }
@@ -40,7 +43,10 @@ export class ReviewsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateReviewDto: UpdateReviewDto,
+  ) {
     const data = await this.reviewsService.update(+id, updateReviewDto);
     return { message: 'Editado exitosamente', payload: data };
   }

@@ -21,7 +21,10 @@ export class RepliesController {
   constructor(private readonly repliesService: RepliesService) {}
 
   @Post()
-  async create(@Body() createReplyDto: CreateReplyDto, @CurrentUser() user: User) {
+  async create(
+    @Body() createReplyDto: CreateReplyDto,
+    @CurrentUser() user: User,
+  ) {
     const data = await this.repliesService.create(createReplyDto, user);
     return { message: 'Creado exitosamente', payload: data };
   }
@@ -39,7 +42,10 @@ export class RepliesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateReplyDto: UpdateReplyDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateReplyDto: UpdateReplyDto,
+  ) {
     const data = await this.repliesService.update(+id, updateReplyDto);
     return { message: 'Editado exitosamente', payload: data };
   }

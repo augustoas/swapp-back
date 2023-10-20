@@ -21,7 +21,10 @@ export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
-  async create(@Body() createQuestionDto: CreateQuestionDto, @CurrentUser() user: User) {
+  async create(
+    @Body() createQuestionDto: CreateQuestionDto,
+    @CurrentUser() user: User,
+  ) {
     const data = await this.questionsService.create(createQuestionDto, user);
     return { message: 'Creado exitosamente', payload: data };
   }
@@ -39,7 +42,10 @@ export class QuestionsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateQuestionDto: UpdateQuestionDto,
+  ) {
     const data = await this.questionsService.update(+id, updateQuestionDto);
     return { message: 'Editado exitosamente', payload: data };
   }

@@ -21,7 +21,10 @@ export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
   @Post()
-  async create(@Body() createOfferDto: CreateOfferDto, @CurrentUser() user: User) {
+  async create(
+    @Body() createOfferDto: CreateOfferDto,
+    @CurrentUser() user: User,
+  ) {
     const data = await this.offersService.create(createOfferDto, user);
     return { message: 'Creado exitosamente', payload: data };
   }
@@ -39,7 +42,10 @@ export class OffersController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateOfferDto: UpdateOfferDto,
+  ) {
     const data = await this.offersService.update(+id, updateOfferDto);
     return { message: 'Editado exitosamente', payload: data };
   }

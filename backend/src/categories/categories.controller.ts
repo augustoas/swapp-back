@@ -39,7 +39,10 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
     const data = await this.categoriesService.update(+id, updateCategoryDto);
     return { message: 'Editado exitosamente', payload: data };
   }

@@ -7,7 +7,10 @@ export const OptionalJwt = createParamDecorator(
     const token = request.headers.authorization;
     if (token) {
       try {
-        const decodedToken = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET); // Remove 'Bearer ' from token
+        const decodedToken = jwt.verify(
+          token.replace('Bearer ', ''),
+          process.env.JWT_SECRET,
+        ); // Remove 'Bearer ' from token
         request.user = decodedToken;
       } catch (error) {
         request.user = null;

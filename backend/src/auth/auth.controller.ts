@@ -53,11 +53,18 @@ export class AuthController {
   @Post('/forgotpassword')
   async forgotPassword(@Body() body: { email: string }) {
     const data = await this.authService.generateResetToken(body.email);
-    return { message: 'Se ha enviado un correo con las indicaciones para recuperar su contraseña.', payload: data };
+    return {
+      message:
+        'Se ha enviado un correo con las indicaciones para recuperar su contraseña.',
+      payload: data,
+    };
   }
 
   @Post('/resetpassword')
-  async resetPassword(@Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto, @OptionalJwt() user?: User) {
+  async resetPassword(
+    @Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto,
+    @OptionalJwt() user?: User,
+  ) {
     const data = await this.authService.resetPassword(resetPasswordDto, user);
     return { message: 'Cambio de contraseña exitoso.', payload: data };
   }

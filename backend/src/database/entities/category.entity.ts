@@ -5,7 +5,7 @@ import {
   OneToMany,
   Unique,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { JobCategory } from './jobCategory.entity';
 

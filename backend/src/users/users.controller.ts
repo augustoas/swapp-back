@@ -21,7 +21,9 @@ import { IApiResponse } from 'src/types/Api.interface';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<IApiResponse<User>> {
+  async create(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<IApiResponse<User>> {
     const data = await this.usersService.create(createUserDto);
     return { message: 'Usuario creado exitosamente', payload: data };
   }
@@ -39,7 +41,10 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<IApiResponse<User>> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<IApiResponse<User>> {
     const data = await this.usersService.update(+id, updateUserDto);
     return { message: 'Usuario editado exitosamente', payload: data };
   }

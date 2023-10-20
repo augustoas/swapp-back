@@ -72,28 +72,31 @@ export class AuthService {
   // envia token a email
   async generateResetToken(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
-    if (!user) throw new Error("Invalid credentials");
+    if (!user) throw new Error('Invalid credentials');
     const resetToken = crypto.randomBytes(32).toString('hex');
     user.resetToken = resetToken;
     user.resetTokenExpiration = new Date(Date.now() + 3600000); // Token expires in 1 hour
     this.mailService.sendResetPassword(email, resetToken);
     await this.userRepository.save(user);
-    
+
     return resetToken;
   }
 
   // recibe y valida token
   private async handleResetToken(token: string): Promise<User> {
     // token valido?
-    const user = await this.userRepository.findOne({ where: { resetToken: token } });
-    if (!user) throw new Error("Invalid token");
+    const user = await this.userRepository.findOne({
+      where: { resetToken: token },
+    });
+    if (!user) throw new Error('Invalid token');
     // ha pasado 1 hr?
     const oneHourAgo = new Date();
     oneHourAgo.setHours(oneHourAgo.getHours() - 1);
-    console.log("resetTokenExpiration => ", user.resetTokenExpiration)
-    console.log("oneHourAgo => ", oneHourAgo)
-    if (user.resetTokenExpiration < oneHourAgo) throw new Error("Expired token");
-    return user
+    console.log('resetTokenExpiration => ', user.resetTokenExpiration);
+    console.log('oneHourAgo => ', oneHourAgo);
+    if (user.resetTokenExpiration < oneHourAgo)
+      throw new Error('Expired token');
+    return user;
   }
 
   // cambia contraseña
@@ -103,10 +106,13 @@ export class AuthService {
     const { newPassword, confirmPassword, resetToken } = resetPasswordDto;
     // Si viene el token, viene desde afuera y hay que validar token
     if (resetToken) thisUser = await this.handleResetToken(resetToken);
-    if (!thisUser) throw new Error("Invalid credentials.");
-    if (newPassword !== confirmPassword) throw new Error("Passwords must match.");
+    if (!thisUser) throw new Error('Invalid credentials.');
+    if (newPassword !== confirmPassword)
+      throw new Error('Passwords must match.');
     // Update the user's password
     const hashedPassword = await bcrypt.hash(newPassword, 12);
-    return this.userRepository.update(thisUser.id, {password: hashedPassword});
+    return this.userRepository.update(thisUser.id, {
+      password: hashedPassword,
+    });
   }
 }
