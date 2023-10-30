@@ -15,6 +15,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { RepliesModule } from './replies/replies.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { MailModule } from './mail/mail.module';
+import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 
 @Module({
   imports: [
@@ -42,6 +43,11 @@ import { MailModule } from './mail/mail.module';
     RepliesModule,
     ReviewsModule,
     MailModule,
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true,
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [

@@ -31,7 +31,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     this.exceptionResponse.payload = {
-      details: this.details,
+      ...this.details,
       timestamp: new Date().toISOString(),
       path: request.url,
     };
