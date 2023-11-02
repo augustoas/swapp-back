@@ -13,5 +13,18 @@ services:
     volumes:
       - swappdb:/var/lib/postgresql/data:rw
 
+  redis:
+    image: "redis:7-alpine"
+    ports:
+      - "6379:6379"
+    environment:
+      # Change to your desired Redis password
+      REDIS_PASSWORD: $2a$20$fsGmYgbReR.kEr4rzoyw6O6xr2AGNr3PLkEAroNQY/dtsoEtcxKke
+
+# para .env de backend
+# REDIS_HOST: localhost
+# REDIS_PORT: 6379
+# REDIS_PASSWORD: $2a$20$fsGmYgbReR.kEr4rzoyw6O6xr2AGNr3PLkEAroNQY/dtsoEtcxKke
+
 volumes:
   swappdb:
