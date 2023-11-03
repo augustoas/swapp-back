@@ -20,6 +20,7 @@ services:
     environment:
       # Change to your desired Redis password
       REDIS_PASSWORD: $2a$20$fsGmYgbReR.kEr4rzoyw6O6xr2AGNr3PLkEAroNQY/dtsoEtcxKke
+      REDIS_DB: 1
 
 # para .env de backend
 # REDIS_HOST: localhost
