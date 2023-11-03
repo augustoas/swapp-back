@@ -17,7 +17,6 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { MailModule } from './mail/mail.module';
 import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 import { ChatModule } from './chat/chat.module';
-import { RedisModule } from 'nestjs-redis';
 
 @Module({
   imports: [
@@ -35,14 +34,6 @@ import { RedisModule } from 'nestjs-redis';
       migrationsTableName: 'migrations',
       synchronize: true,
       logging: true,
-    }),
-    RedisModule.forRootAsync({
-      useFactory: () => ({
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT),
-        db: parseInt(process.env.REDIS_DB),
-        password: process.env.REDIS_PASSWORD,
-      }),
     }),
     UsersModule,
     JobsModule,
