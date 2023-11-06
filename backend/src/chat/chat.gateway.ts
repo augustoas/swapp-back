@@ -10,12 +10,16 @@ export class ChatGateway {
 
   @SubscribeMessage('createChat')
   create(@MessageBody() createChatDto: CreateChatDto) {
-    return this.chatService.create(createChatDto);
+    const data = this.chatService.create(createChatDto);
+    console.log("holi soy create del evento createChat")
+    return { message: 'createChat creado', payload: data };
   }
 
   @SubscribeMessage('findAllChat')
   findAll(@MessageBody() findAllChatDto: FindAllChatDto) {
-    return this.chatService.findAll(findAllChatDto);
+    const data = this.chatService.findAll(findAllChatDto);
+    console.log("holi soy findAll del evento findAllChat")
+    return { message: 'findAllChat done', payload: data };
   }
 
   // @SubscribeMessage('findOneChat')
