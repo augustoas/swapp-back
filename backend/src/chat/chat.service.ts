@@ -2,15 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { FindAllChatDto } from './dto/findall-chat.dto';
-import { RedisService } from '@liaoliaots/nestjs-redis';
-import Redis from 'ioredis';
+import { Redis } from "ioredis";
 
 @Injectable()
 export class ChatService {
-  private readonly redis: Redis;
+  private readonly redis;
 
-  constructor(private readonly redisService: RedisService) {
-    this.redis = this.redisService.getClient();
+  constructor() {
+    this.redis = new Redis();
   }
 
 
