@@ -4,7 +4,7 @@ import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { FindAllChatDto } from './dto/findall-chat.dto';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway {
   constructor(private readonly chatService: ChatService) { }
 
