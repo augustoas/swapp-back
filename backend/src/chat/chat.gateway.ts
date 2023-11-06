@@ -1,4 +1,5 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
@@ -9,16 +10,18 @@ export class ChatGateway {
   constructor(private readonly chatService: ChatService) { }
 
   @SubscribeMessage('createChat')
-  create(@MessageBody() createChatDto: CreateChatDto) {
+  create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() client: Socket) {
     const data = this.chatService.create(createChatDto);
     console.log("holi soy create del evento createChat")
+    client.emit('createChat', data)
     return { message: 'createChat creado', payload: data };
   }
 
   @SubscribeMessage('findAllChat')
-  findAll(@MessageBody() findAllChatDto: FindAllChatDto) {
+  findAll(@MessageBody() findAllChatDto: FindAllChatDto, @ConnectedSocket() client: Socket) {
     const data = this.chatService.findAll(findAllChatDto);
     console.log("holi soy findAll del evento findAllChat")
+    client.emit('findAllChat', data)
     return { message: 'findAllChat done', payload: data };
   }
 
