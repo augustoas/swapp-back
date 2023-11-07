@@ -18,11 +18,15 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('findAllChat')
-  findAll(@MessageBody() findAllChatDto: FindAllChatDto, @ConnectedSocket() client: Socket) {
-    const data = this.chatService.findAll(findAllChatDto);
-    console.log("holi soy findAll del evento findAllChat")
-    client.emit('findAllChat', data)
-    return { message: 'findAllChat done', payload: data };
+  async findAll(@MessageBody() findAllChatDto: FindAllChatDto, @ConnectedSocket() client: Socket): Promise<void> {
+    try {
+      const messages = await this.chatService.findAll(findAllChatDto);
+      console.log('Messages', messages); // Should now log an array of objects, not strings
+      client.emit('findAllChat', messages); // Emit the array of message objects
+    } catch (error) {
+      console.error('Error in findAllChat:', error);
+      // Handle the error appropriately
+    }
   }
 
   // @SubscribeMessage('findOneChat')

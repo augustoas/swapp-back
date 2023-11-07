@@ -19,7 +19,9 @@ export class ChatService {
 
   async findAll(findAllChatDto: FindAllChatDto) {
     // (llave, inicio, fin)
-    return await this.redis.lrange(`chat-${findAllChatDto.emailJobCreator}-${findAllChatDto.emailJobWorker}`, 0, -1);
+    const messages = await this.redis.lrange(`chat-${findAllChatDto.emailJobCreator}-${findAllChatDto.emailJobWorker}`, 0, -1);
+    
+    return messages.map((message) => JSON.parse(message));
   }
 
   // findOne(id: number) {
