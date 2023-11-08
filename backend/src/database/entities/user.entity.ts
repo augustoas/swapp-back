@@ -13,6 +13,7 @@ import { Review } from './review.entity';
 import { Offer } from './offer.entity';
 import { Question } from './question.entity';
 import { Reply } from './reply.entity';
+import { Factory } from 'nestjs-seeder';
 
 @Entity()
 @Unique(['email'])
@@ -21,15 +22,19 @@ export class User {
   id: number;
 
   @Column()
+  @Factory((faker) => faker.person.firstName())
   firstname: string;
 
   @Column()
+  @Factory((faker) => faker.person.lastName())
   lastname: string;
 
   @Column()
+  @Factory((faker) => faker.internet.email())
   email: string;
 
   @Column()
+  @Factory((faker) => faker.internet.password())
   password: string;
 
   @Column({

@@ -15,7 +15,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { RepliesModule } from './replies/replies.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { MailModule } from './mail/mail.module';
-import { PrometheusModule } from "@willsoto/nestjs-prometheus";
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { ChatModule } from './chat/chat.module';
 
 @Module({
@@ -60,4 +60,4 @@ import { ChatModule } from './chat/chat.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

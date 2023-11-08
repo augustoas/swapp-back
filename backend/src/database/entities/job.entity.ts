@@ -14,6 +14,7 @@ import { Review } from './review.entity';
 import { Offer } from './offer.entity';
 import { Question } from './question.entity';
 import { JobCategory } from './jobCategory.entity';
+import { Factory } from 'nestjs-seeder';
 
 @Entity()
 export class Job {
@@ -21,19 +22,22 @@ export class Job {
   id: number;
 
   @Column()
+  @Factory((faker) => faker.number.int({ min: 10000, max: 2000000 }))
   budget: number;
 
-  @Column()
+  @Column({ nullable: true })
   accepted_budget: number;
 
-  @Column()
-  details: number;
+  @Column({ type: 'text' })
+  @Factory((faker) => faker.lorem.lines())
+  details: string;
 
   @Column({
     type: 'enum',
     enum: Job_Status,
     nullable: true,
   })
+  @Factory(() => Job_Status.OPEN)
   status: Job_Status;
 
   @Column({
@@ -41,6 +45,7 @@ export class Job {
     enum: Currency,
     nullable: true,
   })
+  @Factory(() => Currency.CLP)
   currency: Currency;
 
   @CreateDateColumn({ type: 'timestamp' })

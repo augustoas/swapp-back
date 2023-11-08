@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, MinLength, IsEmail, IsDate } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  IsEmail,
+  IsDate,
+} from 'class-validator';
 
 // defines the shape of the data required for authentication
 export class CreateChatDto {
@@ -20,5 +26,5 @@ export class CreateChatDto {
 
   @IsNotEmpty()
   @IsDate()
-  readonly timestamp: Date
+  readonly timestamp: Date;
 }

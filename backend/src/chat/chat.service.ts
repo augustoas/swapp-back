@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { FindAllChatDto } from './dto/findall-chat.dto';
-import { Redis } from "ioredis";
+import { Redis } from 'ioredis';
 
 @Injectable()
 export class ChatService {
@@ -12,15 +12,21 @@ export class ChatService {
     this.redis = new Redis();
   }
 
-
   async create(createChatDto: CreateChatDto) {
-    return await this.redis.lpush(`chat-${createChatDto.emailJobCreator}-${createChatDto.emailJobWorker}`, JSON.stringify(createChatDto));
+    return await this.redis.lpush(
+      `chat-${createChatDto.emailJobCreator}-${createChatDto.emailJobWorker}`,
+      JSON.stringify(createChatDto),
+    );
   }
 
   async findAll(findAllChatDto: FindAllChatDto) {
     // (llave, inicio, fin)
-    const messages = await this.redis.lrange(`chat-${findAllChatDto.emailJobCreator}-${findAllChatDto.emailJobWorker}`, 0, -1);
-    
+    const messages = await this.redis.lrange(
+      `chat-${findAllChatDto.emailJobCreator}-${findAllChatDto.emailJobWorker}`,
+      0,
+      -1,
+    );
+
     return messages.map((message) => JSON.parse(message));
   }
 
