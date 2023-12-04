@@ -4,6 +4,10 @@ import { Job } from './database/entities/job.entity';
 import { UserSeeder } from './database/seeders/user.seeder';
 import { JobSeeder } from './database/seeders/job.seeder';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JobLocation } from './database/entities/jobLocation.entity';
+import { Location } from './database/entities/location.entity';
+import { LocationSeeder } from './database/seeders/location.seeder';
+import { JobLocationSeeder } from './database/seeders/jobLocation.seeder';
 
 seeder({
   imports: [
@@ -17,6 +21,6 @@ seeder({
       synchronize: false,
       entities: [__dirname + '/database/entities/*.entity{.ts,.js}'],
     }),
-    TypeOrmModule.forFeature([User, Job]),
+    TypeOrmModule.forFeature([User, Job, JobLocation, Location]),
   ],
-}).run([UserSeeder, JobSeeder]);
+}).run([UserSeeder, LocationSeeder, JobSeeder, JobLocationSeeder]);

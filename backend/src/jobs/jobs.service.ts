@@ -4,13 +4,16 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Job } from 'src/database/entities/job.entity';
+import { JobLocation } from 'src/database/entities/jobLocation.entity';
+import { Location } from 'src/database/entities/location.entity';
 import { User } from 'src/database/entities/user.entity';
 
 @Injectable()
 export class JobsService {
   constructor(
-    @InjectRepository(Job)
-    private readonly jobRepository: Repository<Job>,
+    @InjectRepository(Job) private readonly jobRepository: Repository<Job>,
+    @InjectRepository(JobLocation) private readonly jobLocationRepository: Repository<JobLocation>,
+    @InjectRepository(Location) private readonly locationRepository: Repository<Location>,
   ) {}
 
   async create(createJobDto: CreateJobDto, user: User): Promise<Job> {
