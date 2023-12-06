@@ -49,6 +49,10 @@ export class Location {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
+  @Column()
+  @Factory((faker) => faker.string.alphanumeric(16))
+  hash: string;
+
   @OneToMany(() => JobLocation, (jobLocations) => jobLocations.job)
   jobLocations: JobLocation[];
 }

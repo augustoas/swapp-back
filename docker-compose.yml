@@ -7,11 +7,11 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=test
+      - POSTGRES_USER=swap
+      - POSTGRES_PASSWORD=swapSWAPswapSWAP12345
+      - POSTGRES_DB=swapdb
     volumes:
-      - swappdb:/var/lib/postgresql/data:rw
+      - swapvolume:/var/lib/postgresql/data:rw
 
   redis:
     image: "redis:7-alpine"
@@ -28,4 +28,4 @@ services:
 # REDIS_PASSWORD: $2a$20$fsGmYgbReR.kEr4rzoyw6O6xr2AGNr3PLkEAroNQY/dtsoEtcxKke
 
 volumes:
-  swappdb:
+  swapvolume:

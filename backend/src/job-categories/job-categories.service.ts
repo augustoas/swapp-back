@@ -34,18 +34,20 @@ export class JobCategoriesService {
     return this.jobCategoryRepository.findOne({ where: { id: id } });
   }
 
+  async findAllByJobId(jobId: number): Promise<Array<JobCategory>> {
+    return this.jobCategoryRepository.find({ where: { job: { id: jobId } } });
+  }
+
   async update(
     id: number,
     updateJobCategoryDto: UpdateJobCategoryDto,
   ): Promise<JobCategory> {
-    const thisReply = await this.jobCategoryRepository.findOne({
+    const thisJobCategory = await this.jobCategoryRepository.findOne({
       where: { id: id },
     });
-    if (updateJobCategoryDto.jobId)
-      thisReply.job = { id: +updateJobCategoryDto.jobId } as Job;
-    if (updateJobCategoryDto.categoryId)
-      thisReply.category = { id: +updateJobCategoryDto.categoryId } as Category;
-    await this.jobCategoryRepository.update(id, thisReply);
+    if (updateJobCategoryDto.jobId) thisJobCategory.job = { id: +updateJobCategoryDto.jobId } as Job;
+    if (updateJobCategoryDto.categoryId) thisJobCategory.category = { id: +updateJobCategoryDto.categoryId } as Category;
+    await this.jobCategoryRepository.update(id, thisJobCategory);
     return this.jobCategoryRepository.findOne({ where: { id: id } });
   }
 

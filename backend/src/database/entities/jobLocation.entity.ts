@@ -4,11 +4,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 import { Job } from './job.entity';
 import { Location } from './location.entity';
 
 @Entity()
+@Unique(['location', 'job']) // no se puede repetir la location para un job
 export class JobLocation {
   @PrimaryGeneratedColumn()
   id: number;

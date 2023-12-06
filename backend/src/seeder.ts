@@ -8,6 +8,10 @@ import { JobLocation } from './database/entities/jobLocation.entity';
 import { Location } from './database/entities/location.entity';
 import { LocationSeeder } from './database/seeders/location.seeder';
 import { JobLocationSeeder } from './database/seeders/jobLocation.seeder';
+import { CategorySeeder } from './database/seeders/category.seeder';
+import { JobCategorySeeder } from './database/seeders/jobCategory.seeder';
+import { Category } from './database/entities/category.entity';
+import { JobCategory } from './database/entities/jobCategory.entity';
 
 seeder({
   imports: [
@@ -21,6 +25,6 @@ seeder({
       synchronize: false,
       entities: [__dirname + '/database/entities/*.entity{.ts,.js}'],
     }),
-    TypeOrmModule.forFeature([User, Job, JobLocation, Location]),
+    TypeOrmModule.forFeature([User, Location, Category, Job, JobCategory, JobLocation]),
   ],
-}).run([UserSeeder, LocationSeeder, JobSeeder, JobLocationSeeder]);
+}).run([UserSeeder, LocationSeeder, CategorySeeder, JobSeeder, JobCategorySeeder, JobLocationSeeder]);
