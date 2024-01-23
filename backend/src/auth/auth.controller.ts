@@ -3,9 +3,6 @@ import {
   Get,
   Post,
   Body,
-  ValidationPipe,
-  HttpException,
-  HttpStatus,
   UseGuards,
   Req,
   Param,
@@ -26,7 +23,7 @@ export class AuthController {
 
   @Post('/signup')
   async signUp(
-    @Body(new ValidationPipe()) signUpDto: SignUpDto,
+    @Body() signUpDto: SignUpDto,
   ): Promise<IApiResponse<User>> {
     const data = await this.authService.signUp(signUpDto);
     return { message: 'Usuario creado exitosamente', payload: data };
@@ -34,7 +31,7 @@ export class AuthController {
 
   @Post('/signin')
   async signIn(
-    @Body(new ValidationPipe()) signInDto: SignInDto,
+    @Body() signInDto: SignInDto,
   ): Promise<IApiResponse<{ token: string; user: User }>> {
     const data = await this.authService.signIn(signInDto);
     return { message: 'Inicio de sesión exitoso', payload: data };
@@ -62,7 +59,7 @@ export class AuthController {
 
   @Post('/resetpassword')
   async resetPassword(
-    @Body(new ValidationPipe()) resetPasswordDto: ResetPasswordDto,
+    @Body() resetPasswordDto: ResetPasswordDto,
     @OptionalJwt() user?: User,
   ) {
     const data = await this.authService.resetPassword(resetPasswordDto, user);

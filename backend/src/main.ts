@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './helpers/response.interceptor';
 import * as express from 'express';
@@ -14,6 +15,11 @@ async function bootstrap() {
   //app.use(helmet()); // Use Helmet for security
   // Register the interceptor globally
   app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   await app.listen(4000);
 }

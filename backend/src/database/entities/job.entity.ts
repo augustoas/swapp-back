@@ -15,6 +15,8 @@ import { Offer } from './offer.entity';
 import { Question } from './question.entity';
 import { JobCategory } from './jobCategory.entity';
 import { Factory } from 'nestjs-seeder';
+import { DateType } from 'src/types/DateType.enum';
+import { JobLocation } from './jobLocation.entity';
 
 @Entity()
 export class Job {
@@ -73,4 +75,22 @@ export class Job {
 
   @OneToMany(() => JobCategory, (jobCategories) => jobCategories.job)
   jobCategories: JobCategory[];
+
+  @Column({
+    type: 'enum',
+    enum: DateType,
+  })
+  @Factory(() => Object.values(DateType)[Math.floor(Math.random() * Object.values(DateType).length)] as DateType)
+  dateType: DateType;
+
+  @Column({ nullable: true })
+  @Factory((faker) => faker.date.soon({ days: 10 }))
+  date: Date;
+
+  @Column({ type: 'boolean' })
+  @Factory(() => Math.random() < 0.5)
+  is_remote: boolean;
+
+  @OneToMany(() => JobLocation, (jobLocations) => jobLocations.location)
+  jobLocations: JobLocation[];
 }
