@@ -27,12 +27,6 @@ seeder({
       synchronize: false,
       entities: [__dirname + '/database/entities/*.entity{.ts,.js}'],
     }),
-<<<<<<< HEAD
-    TypeOrmModule.forFeature([User, Job, TermsAndConditions]),
+    TypeOrmModule.forFeature([User, Location, Category, Job, JobCategory, JobLocation, TermsAndConditions]),
   ],
-}).run([UserSeeder, JobSeeder, TYCSeeder]);
-=======
-    TypeOrmModule.forFeature([User, Location, Category, Job, JobCategory, JobLocation]),
-  ],
-}).run([UserSeeder, LocationSeeder, CategorySeeder, JobSeeder, JobCategorySeeder, JobLocationSeeder]);
->>>>>>> 3133a1ac0ff9133fba65e81778706d86787571a2
+}).run([UserSeeder, LocationSeeder, CategorySeeder, JobSeeder, JobCategorySeeder, JobLocationSeeder, TYCSeeder]);
