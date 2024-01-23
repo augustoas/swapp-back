@@ -1,8 +1,10 @@
 import { seeder } from 'nestjs-seeder';
 import { User } from './database/entities/user.entity';
 import { Job } from './database/entities/job.entity';
+import { TermsAndConditions } from './database/entities/termsAndConditions.entity';
 import { UserSeeder } from './database/seeders/user.seeder';
 import { JobSeeder } from './database/seeders/job.seeder';
+import { TYCSeeder } from './database/seeders/tyc.seeder';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 seeder({
@@ -17,6 +19,6 @@ seeder({
       synchronize: false,
       entities: [__dirname + '/database/entities/*.entity{.ts,.js}'],
     }),
-    TypeOrmModule.forFeature([User, Job]),
+    TypeOrmModule.forFeature([User, Job, TermsAndConditions]),
   ],
-}).run([UserSeeder, JobSeeder]);
+}).run([UserSeeder, JobSeeder, TYCSeeder]);

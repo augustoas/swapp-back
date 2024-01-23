@@ -17,6 +17,8 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { MailModule } from './mail/mail.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { ChatModule } from './chat/chat.module';
+import { TycModule } from './tyc/tyc.module';
+import { MercadopagoModule } from './mercadopago/mercadopago.module';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { ChatModule } from './chat/chat.module';
       },
     }),
     ChatModule,
+    TycModule,
+    MercadopagoModule,
   ],
   controllers: [AppController],
   providers: [

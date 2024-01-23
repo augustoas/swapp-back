@@ -2,14 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { FindAllChatDto } from './dto/findall-chat.dto';
+import { ConfigService } from '@nestjs/config';
 import { Redis } from 'ioredis';
 
 @Injectable()
 export class ChatService {
   private readonly redis;
 
-  constructor() {
-    this.redis = new Redis();
+  constructor(private readonly configService: ConfigService) {
+    this.redis = new Redis({
+      port: this.configService.get<number>('REDIS_PORT'), // Redis port
+      host: this.configService.get<string>('REDIS_HOST'), // Redis host
+      password: this.configService.get<string>('REDIS_PASSWORD'),
+      db: this.configService.get<number>('REDIS_DB'), // Defaults to 0
+    });
   }
 
   async create(createChatDto: CreateChatDto) {

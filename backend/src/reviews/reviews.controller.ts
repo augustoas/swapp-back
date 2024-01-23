@@ -14,7 +14,6 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { User } from 'src/database/entities/user.entity';
-import { IApiResponse } from 'src/types/Api.interface';
 
 @Controller('reviews')
 @UseGuards(AuthGuard())

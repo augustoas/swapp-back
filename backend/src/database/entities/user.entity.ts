@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   Unique,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { Gender } from '../../types/Gender.enum';
 import { Job } from './job.entity';
@@ -13,6 +14,7 @@ import { Review } from './review.entity';
 import { Offer } from './offer.entity';
 import { Question } from './question.entity';
 import { Reply } from './reply.entity';
+import { TermsAndConditions } from './termsAndConditions.entity';
 import { Factory } from 'nestjs-seeder';
 
 @Entity()
@@ -89,4 +91,7 @@ export class User {
 
   @OneToMany(() => Reply, (replies) => replies.user, { nullable: true })
   replies: Reply[];
+
+  @ManyToMany(() => TermsAndConditions, (termsAndConditions) => termsAndConditions.users)
+  termsAndConditions: TermsAndConditions[];
 }

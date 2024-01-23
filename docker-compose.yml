@@ -1,31 +1,66 @@
 version: "3"
 
 services:
-  postgres_app:
+  # BACKEND SERVICE
+  backend:
+    build: ./backend
+    volumes:
+      - /var/uploads:/backend/uploads/:rw
+    ports:
+      - "4000:4000"
+    networks:
+      - swapp-network
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USERNAME=root
+      - PG_PASSWORD=rootROOT1234
+      - PG_DATABASE=swappdb
+      - JWT_SECRET=sjdvnksjdcnvskdfslkjdfndskjlf
+      - JWT_EXPIRES=8d
+      - GOOGLE_CLIENT_ID=464730158926-40tvg39pedt0mcgjrrocp4ef47lip4vn.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=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
+      - MAIL_HOST=smtp.office365.com
+      - MAIL_USER=swapp@outlook.com
+      - MAIL_PASSWORD=gdrfgdsef
+      - MAIL_FROM=swapp@outlook.com
+      - REDIS_PASSWORD=tcxKkehj23gfosd8KD0GSKKv98hONJoh8HOH8j
+      - REDIS_DB=1
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
+
+  # POSTGRES DATABASE
+  postgres:
     image: postgres:15.3-alpine3.18
     ports:
       - "5432:5432"
+    networks:
+      - swapp-network
     restart: always
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=test
+      - POSTGRES_PASSWORD=rootROOT1234
+      - POSTGRES_DB=swappdb
     volumes:
-      - swappdb:/var/lib/postgresql/data:rw
+      - swapp-volume:/var/lib/postgresql/data:rw
 
+  # REDIS DATABASE
   redis:
     image: "redis:7-alpine"
     ports:
       - "6379:6379"
+    networks:
+      - swapp-network
     environment:
-      # Change to your desired Redis password
-      REDIS_PASSWORD: $2a$20$fsGmYgbReR.kEr4rzoyw6O6xr2AGNr3PLkEAroNQY/dtsoEtcxKke
+      REDIS_PASSWORD: tcxKkehj23gfosd8KD0GSKKv98hONJoh8HOH8j
       REDIS_DB: 1
 
-# para .env de backend
-# REDIS_HOST: localhost
-# REDIS_PORT: 6379
-# REDIS_PASSWORD: $2a$20$fsGmYgbReR.kEr4rzoyw6O6xr2AGNr3PLkEAroNQY/dtsoEtcxKke
-
 volumes:
-  swappdb:
+  swapp-volume:
+
+networks:
+  swapp-network:
+    external: true
