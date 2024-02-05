@@ -6,6 +6,44 @@ import { User } from 'src/database/entities/user.entity';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
+  private emailQueue: any[] = [];
+  private isSending = false;
+  /**
+   * Enqueues an email to be sent.
+   * 
+   * @param data - The email data.
+   * @param method - The method used to send the email.
+   */
+  enqueueEmail(data: any, method: string) {
+    this.emailQueue.push({data, method});
+    // Start processing the queue if it's not already being processed
+    if (!this.isSending) {
+      this.processEmailQueue();
+    }
+  }
+
+  /**
+   * Processes the email queue and sends emails based on the specified method.
+   * @param method - The method to determine which type of email to send.
+   * @returns A Promise that resolves when the email queue has been processed.
+   */
+  private async processEmailQueue(): Promise<void> {
+    this.isSending = true;
+    while (this.emailQueue.length > 0) {
+      const nextEmail = this.emailQueue.shift();
+      const emailData = nextEmail.data;
+      const method = nextEmail.method;
+      switch (method) {
+        case 'sendResetPassword':
+          await this.sendResetPassword(emailData.email, emailData.token);
+          break;
+        default:
+          console.error(`Unsupported email method: ${method}`);
+      }
+    }
+    this.isSending = false;
+  }
+
   async sendUserConfirmation(user: User) {
     await this.mailerService.sendMail({
       to: user.email,

@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -14,6 +16,8 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/CurrentUser.decorator';
 import { User } from 'src/database/entities/user.entity';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from '../config/multer.config';
 
 @Controller('jobs')
 @UseGuards(AuthGuard())
@@ -21,7 +25,11 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Post()
-  async create(@Body() createJobDto: CreateJobDto, @CurrentUser() user: User) {
+  @UseInterceptors(FilesInterceptor('files', 10, multerConfig))
+  async create(
+    @Body() createJobDto: CreateJobDto,
+    @UploadedFiles() files: Express.Multer.File[], 
+    @CurrentUser() user: User) {
     const data = await this.jobsService.create(createJobDto, user);
     return { message: 'Creado exitosamente', payload: data };
   }
